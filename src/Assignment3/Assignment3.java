@@ -1,5 +1,9 @@
+package Assignment3;
+
 import java.lang.System;
+import java.util.Date;
 import java.io.*;
+
 
 public class Assignment3 {
     public static void main(String[] args) {
@@ -11,6 +15,19 @@ public class Assignment3 {
             "Feedback system",
             "Three"
         });
+
+        EventManager manager = new EventManager();
+
+        switch (choice) {
+            case 1:
+                User usr = new User(manager);
+                usr.bookEvent(new Date());
+                manager.printAllEvents();
+                break;
+        
+            default:
+                break;
+        }
     }
 
     private static int menu(String[] options) {

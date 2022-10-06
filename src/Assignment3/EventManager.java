@@ -1,4 +1,3 @@
-// keely wants to look at this
 package Assignment3;
 
 import java.util.ArrayList;

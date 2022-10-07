@@ -14,4 +14,8 @@ public class User {
     public void bookEvent(Date date) {
         eventID = manager.createEvent(date);
     }
+
+    public void giveFeedback(String type, String content){
+        Feedback feedback = new Feedback(type, content);
+    }
 }

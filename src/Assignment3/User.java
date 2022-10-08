@@ -3,10 +3,10 @@ package Assignment3;
 import java.util.Date;
 
 public class User {
-    private EventManager manager;
+    private EventStorage manager;
     private String eventID;
 
-    User(EventManager eventStorage) {
+    User(EventStorage eventStorage) {
         manager = eventStorage;
         eventID = "0";
     }

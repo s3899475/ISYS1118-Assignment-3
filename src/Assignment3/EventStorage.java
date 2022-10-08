@@ -4,10 +4,10 @@ package Assignment3;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EventManager {
+public class EventStorage {
     private ArrayList<Event> events;
 
-    EventManager() {
+    EventStorage() {
         events = new ArrayList<>();
     }
     

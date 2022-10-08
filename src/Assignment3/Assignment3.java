@@ -16,7 +16,7 @@ public class Assignment3 {
             "Three"
         });
 
-        EventManager manager = new EventManager();
+        EventStorage manager = new EventStorage();
 
         switch (choice) {
             case 1:

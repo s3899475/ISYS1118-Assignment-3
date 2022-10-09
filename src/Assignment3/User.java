@@ -4,18 +4,18 @@ import java.util.Date;
 
 public class User {
     private EventStorage manager;
-    protected String eventID;
+    protected int eventID;
 
     User(EventStorage eventStorage) {
         manager = eventStorage;
-        eventID = "0";
+        eventID = 0;
     }
 
     public void bookEvent(Date date) {
         eventID = manager.createEvent(date);
     }
 
-    public String getEventID() {
+    public int getEventID() {
         return eventID;
     }
 }

@@ -46,7 +46,7 @@ public class Assignment3 {
 
             case 2: // Authorized User
                 manager.printAllEvents();
-                String id = question("Input Event ID");
+                int id = intQuestion("Input Event ID");
                 User usr = getUser(id);
                 if (usr == null) {
                     System.out.println("That user does not exist\n");
@@ -85,11 +85,11 @@ public class Assignment3 {
         return null;
     }
 
-    private static User getUser(String eventID) {
+    private static User getUser(int eventID) {
         for (User user : users) {
             System.out.println(eventID);
             System.out.println(user.getEventID());
-            if (user.getEventID() != "0" && user.getEventID() == eventID) {
+            if (user.getEventID() != 0 && user.getEventID() == eventID) {
                 return user;
             }
         }
@@ -102,6 +102,15 @@ public class Assignment3 {
             return br.readLine();
         } catch (Exception e) {
             return "";
+        }
+    }
+
+    private static int intQuestion(String str) {
+        System.out.print(str);
+        try {
+            return Integer.parseInt(br.readLine());
+        } catch (Exception e) {
+            return -1;
         }
     }
 

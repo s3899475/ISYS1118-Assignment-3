@@ -3,15 +3,15 @@ package Assignment3;
 import java.util.Date;
 
 public class Event {
-    private String eventID;
+    private int eventID;
     private Date date;
     
-    Event(String eventID, Date date) {
+    Event(int eventID, Date date) {
         this.eventID = eventID;
         this.date = date;
     }
 
-    public String getEventID() {
+    public int getEventID() {
         return eventID;
     }
 

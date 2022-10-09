@@ -8,5 +8,12 @@ public class Feedback {
         this.type = type;
         this.content = content;
     }
-    
+
+    public String getType() {
+        return type;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }

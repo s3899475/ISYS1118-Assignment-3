@@ -3,11 +3,16 @@ package Assignment3;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class EventStorage {
-    private ArrayList<Event> events;
+public class Storage {
+    public ArrayList<Event> events;
+    public ArrayList<Bill> bills;
+    public ArrayList<Feedback> sent_feedback;
 
-    EventStorage() {
+
+    Storage() {
         events = new ArrayList<>();
+        bills = new ArrayList<>();
+        sent_feedback = new ArrayList<>();
     }
     
     public int createEvent(Date date) {
@@ -27,13 +32,5 @@ public class EventStorage {
         }
         // return null if no event found
         return null;
-    }
-
-
-    public void printAllEvents() {
-        for (Event event : events) {
-            System.out.println("Event " + event.getEventID() + ":");
-            System.out.println("\t" + event.getDate());
-        }
     }
 }

@@ -4,11 +4,15 @@ public class AuthorizedUser extends User {
     private String username;
     private String password;
 
-    AuthorizedUser(String username, String password, EventStorage manager) {
+    AuthorizedUser(String username, String password, Storage manager) {
         super(manager);
         
         this.username = username;
         this.password = password;
+    }
+
+    public void sendBill(int amount, String description) {
+        storage.bills.add(new Bill(amount, description));
     }
 
     public String getUsername() {

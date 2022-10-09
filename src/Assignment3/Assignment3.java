@@ -8,7 +8,7 @@ import java.io.*;
 
 public class Assignment3 {
     // there will only be 1 Assignment3 Instance, so these can all be static
-    private static EventStorage manager;
+    private static Storage storage;
     private static ArrayList<User> users;
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -22,33 +22,31 @@ public class Assignment3 {
             "Login as Authorized User"
         });
 
-        manager = new EventStorage();
+        storage = new Storage();
         users = new ArrayList<User>();
 
         // TESTING: create some dummy users
-        User test_user = new User(manager);
+        User test_user = new User(storage);
         users.add(test_user);
         test_user.bookEvent(new Date());
 
-        User test_user2 = new User(manager);
+        User test_user2 = new User(storage);
         users.add(test_user2);
         test_user2.bookEvent(new Date());
 
-        AuthorizedUser test_user3 = new AuthorizedUser("admin", "admin", manager);
+        AuthorizedUser test_user3 = new AuthorizedUser("admin", "admin", storage);
         users.add(test_user3);
 
         switch (choice) {
             case 1:
                 // TODO: add event options here
-                User new_user = new User(manager);
+                User new_user = new User(storage);
 
                 users.add(new_user);
                 new_user.bookEvent(new Date());
-                manager.printAllEvents();
                 break;
 
-            case 2: // Authorized User
-                manager.printAllEvents();
+            case 2: // Normal User
                 int id = intQuestion("Input Event ID: ");
                 User usr = getUser(id);
                 if (usr == null) {
@@ -58,14 +56,14 @@ public class Assignment3 {
                 }
                 break;
 
-            case 3: // Normal User
+            case 3: // Authorized User
                 String username = question("Input username: ");
                 String password = question("Input password: ");
-                User auth_user = getAuthUser(username, password);
+                AuthorizedUser auth_user = getAuthUser(username, password);
                 if (auth_user == null) {
                     System.out.println("Username or password incorrect\n");
                 } else {
-                    //authUserMenu(auth_user);
+                    authUserMenu(auth_user);
                 }
                 break;
 
@@ -80,7 +78,7 @@ public class Assignment3 {
             if (user instanceof AuthorizedUser) {
                 // cast to subclass
                 AuthorizedUser authUser = (AuthorizedUser) user;
-                if (authUser.getUsername() == username && authUser.getPassword() == password) {
+                if (authUser.getUsername().equals(username) && authUser.getPassword().equals(password)) {
                     return authUser;
                 }
             }
@@ -140,6 +138,59 @@ public class Assignment3 {
                     break;
 
                 case 4:
+                    running = false;
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+
+
+    private static void authUserMenu(AuthorizedUser user) {
+        boolean running = true;
+
+        while (running) {
+            int choice = menu(new String[] {
+                "View all events",
+                "New Bill",
+                "View FeedBack",
+                "View Bills",
+                "Logout"
+            });
+
+            switch (choice) {
+                case 1:
+                    for (Event event : storage.events) {
+                        System.out.println("\nEvent " + event.getEventID() + ":");
+                        System.out.println("\t" + event.getDate());
+                    }
+                    break;
+
+                case 2:
+                    int amount = intQuestion("\nEnter amount: ");
+                    String description = question("Enter description: ");
+                    storage.bills.add(new Bill(amount, description));
+
+                    break;
+                
+                case 3:
+                    for (Feedback feedback : storage.sent_feedback) {
+                        System.out.println(feedback.getType());
+                        System.out.println(feedback.getContent() + "\n");
+                    }
+                    break;
+                
+                case 4:
+                    System.out.println("\nBILLS: ");
+                    for (Bill bill : storage.bills) {
+                        System.out.println("$" + bill.getAmount() + ":");
+                        System.out.println(bill.getDescription() + "\n");
+                    }
+                    break;
+
+                case 5:
                     running = false;
                     break;
             

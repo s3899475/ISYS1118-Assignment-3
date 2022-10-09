@@ -3,20 +3,16 @@ package Assignment3;
 import java.util.Date;
 
 public class User {
-    private EventStorage manager;
+    protected Storage storage;
     protected int eventID;
 
-    User(EventStorage eventStorage) {
-        manager = eventStorage;
-        eventID = 0;
+    User(Storage storage) {
+        this.storage = storage;
+        this.eventID = 0;
     }
 
     public void bookEvent(Date date) {
-        eventID = manager.createEvent(date);
-    }
-
-    public void giveFeedback(String type, String content){
-        Feedback feedback = new Feedback(type, content);
+        eventID = storage.createEvent(date);
     }
 
     public int getEventID() {

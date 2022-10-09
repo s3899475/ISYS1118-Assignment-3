@@ -15,11 +15,11 @@ public class Storage {
         sent_feedback = new ArrayList<>();
     }
     
-    public int createEvent(Date date) {
+    public int createEvent(Date date, String pkg, String menu, String[] options) {
         // make an event with a new eventID
         
         int id = events.size() + 1;
-        events.add(new Event(id, date));
+        events.add(new Event(id, date, pkg, menu, options));
 
         return id;
     }

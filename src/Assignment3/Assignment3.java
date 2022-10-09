@@ -1,8 +1,10 @@
 package Assignment3;
 
 import java.lang.System;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 import java.io.*;
 
 
@@ -16,60 +18,108 @@ public class Assignment3 {
         // initialize and make interface with system
         System.out.println("Starting Assignment 3");
 
-        int choice = menu(new String[] {
-            "Book Event",
-            "Login as Normal User",
-            "Login as Authorized User"
-        });
-
         storage = new Storage();
         users = new ArrayList<User>();
 
         // TESTING: create some dummy users
         User test_user = new User(storage);
         users.add(test_user);
-        test_user.bookEvent(new Date());
+        test_user.bookEvent(new Date(), "big", "fish", new String[] {"band", "jester"});
 
         User test_user2 = new User(storage);
         users.add(test_user2);
-        test_user2.bookEvent(new Date());
+        test_user2.bookEvent(new Date(), "small", "meat", new String[] {"cake"});
 
         AuthorizedUser test_user3 = new AuthorizedUser("admin", "admin", storage);
         users.add(test_user3);
 
-        switch (choice) {
-            case 1:
-                // TODO: add event options here
-                User new_user = new User(storage);
+        while (true) {
+            int choice = menu(new String[] {
+                "Book Event",
+                "Login as Normal User",
+                "Login as Authorized User"
+            });
 
-                users.add(new_user);
-                new_user.bookEvent(new Date());
-                break;
+            switch (choice) {
+                case 1:
+                    User new_user = new User(storage);
+                    users.add(new_user);
+                    createNewEvent(new_user);
+                    break;
 
-            case 2: // Normal User
-                int id = intQuestion("Input Event ID: ");
-                User usr = getUser(id);
-                if (usr == null) {
-                    System.out.println("That user does not exist\n");
-                } else {
-                    userMenu(usr);
+                case 2: // Normal User
+                    int id = intQuestion("Input Event ID: ");
+                    User usr = getUser(id);
+                    if (usr == null) {
+                        System.out.println("That user does not exist\n");
+                    } else {
+                        userMenu(usr);
+                    }
+                    break;
+
+                case 3: // Authorized User
+                    String username = question("Input username: ");
+                    String password = question("Input password: ");
+                    AuthorizedUser auth_user = getAuthUser(username, password);
+                    if (auth_user == null) {
+                        System.out.println("Username or password incorrect\n");
+                    } else {
+                        authUserMenu(auth_user);
+                    }
+                    break;
+
+            
+                default:
+                    break;
+            }
+        }
+    }
+
+    private static void createNewEvent(User user) {
+        String[] menu_options = {
+            "fish",
+            "meat",
+            "vegetarian"
+        };
+
+        String[] pkg_options = {
+            "1-10 people",
+            "11-30 people",
+            "31+ people"
+        };
+
+        ArrayList<String> extra_options = new ArrayList<String>();
+        extra_options.add("band");
+        extra_options.add("jester");
+        extra_options.add("cake");
+
+        ArrayList<String> options = new ArrayList<>();
+
+        while (true) {
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+                Date date = formatter.parse(question("Enter event date (dd/MM/yyyy): "));
+
+                String pkg = pkg_options[menu(pkg_options)-1];
+                String menu = menu_options[menu(menu_options)-1];
+
+                while (true) {
+                    String choice = question("would you like any more optional extras[y/n]?: ");
+                    if (choice.toLowerCase().equals("y")) {
+                        int idx =  menu(extra_options.toArray(new String[0]));
+                        options.add(extra_options.get(idx - 1));
+                        // remove the choice so the user cannot choose it again
+                        extra_options.remove(idx - 1);
+                    } else {
+                        break;
+                    }
                 }
-                break;
 
-            case 3: // Authorized User
-                String username = question("Input username: ");
-                String password = question("Input password: ");
-                AuthorizedUser auth_user = getAuthUser(username, password);
-                if (auth_user == null) {
-                    System.out.println("Username or password incorrect\n");
-                } else {
-                    authUserMenu(auth_user);
-                }
+                user.bookEvent(date, pkg, menu, pkg_options);
                 break;
-
-        
-            default:
-                break;
+            } catch (Exception e) {
+                System.out.println("Error in event creation, please try again.\n");
+            }
         }
     }
 
@@ -115,7 +165,6 @@ public class Assignment3 {
         }
     }
 
-    //TODO
     private static void userMenu(User user) {
         boolean running = true;
 
@@ -129,12 +178,18 @@ public class Assignment3 {
 
             switch (choice) {
                 case 1:
+                    String content = question("Please enter your feedback: ");
+                    storage.sent_feedback.add(new Feedback("default", content));
                     break;
                 
                 case 2:
+                    String request = question("Please enter your modification request");
+                    storage.sent_feedback.add(new Feedback("modification", request));
                     break;
                 
                 case 3:
+                    Event event = storage.getEvent(user.getEventID());
+                    printEvent(event);
                     break;
 
                 case 4:
@@ -147,6 +202,17 @@ public class Assignment3 {
         }
     }
 
+
+    private static void printEvent(Event event) {
+        System.out.println("\n" + event.getEventID() + ":");
+        System.out.println(event.getDate());
+        System.out.println(event.getPkg());
+        System.out.println(event.getMenu());
+        System.out.println("options:");
+        for (String opt : event.getOptions()) {
+            System.out.println("\t" + opt);
+        }
+    }
 
     private static void authUserMenu(AuthorizedUser user) {
         boolean running = true;
@@ -163,8 +229,7 @@ public class Assignment3 {
             switch (choice) {
                 case 1:
                     for (Event event : storage.events) {
-                        System.out.println("\nEvent " + event.getEventID() + ":");
-                        System.out.println("\t" + event.getDate());
+                        printEvent(event);
                     }
                     break;
 

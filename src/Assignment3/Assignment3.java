@@ -34,6 +34,9 @@ public class Assignment3 {
         users.add(test_user2);
         test_user2.bookEvent(new Date());
 
+        AuthorizedUser test_user3 = new AuthorizedUser("admin", "admin", manager);
+        users.add(test_user3);
+
         switch (choice) {
             case 1:
                 // TODO: add event options here
@@ -46,7 +49,7 @@ public class Assignment3 {
 
             case 2: // Authorized User
                 manager.printAllEvents();
-                int id = intQuestion("Input Event ID");
+                int id = intQuestion("Input Event ID: ");
                 User usr = getUser(id);
                 if (usr == null) {
                     System.out.println("That user does not exist\n");
@@ -56,8 +59,8 @@ public class Assignment3 {
                 break;
 
             case 3: // Normal User
-                String username = question("Input username");
-                String password = question("Input username");
+                String username = question("Input username: ");
+                String password = question("Input password: ");
                 User auth_user = getAuthUser(username, password);
                 if (auth_user == null) {
                     System.out.println("Username or password incorrect\n");
@@ -114,17 +117,30 @@ public class Assignment3 {
         }
     }
 
+    //TODO
     private static void userMenu(User user) {
-        while (true) {
+        boolean running = true;
+
+        while (running) {
             int choice = menu( new String[] {
                 "Send FeedBack",
                 "Ask for modification to Event",
-                "View event details"
+                "View event details",
+                "Logout"
             });
 
             switch (choice) {
                 case 1:
-                    
+                    break;
+                
+                case 2:
+                    break;
+                
+                case 3:
+                    break;
+
+                case 4:
+                    running = false;
                     break;
             
                 default:
@@ -139,8 +155,8 @@ public class Assignment3 {
         // loop until a valid choice is made
         while (true) {
             // print menu
+            System.out.println("What would you like to do? Enter a number.");
             for (int i = 0; i < options.length; i++) {
-                System.out.println("What would you like to do? Enter a number.");
                 System.out.printf("%d: %s\n", i+1, options[i]);
             }
             

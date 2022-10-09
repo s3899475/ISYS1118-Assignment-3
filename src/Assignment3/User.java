@@ -1,6 +1,5 @@
 package Assignment3;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 public class User {
@@ -12,8 +11,10 @@ public class User {
         this.eventID = 0;
     }
 
-    public void bookEvent(Date date, String pkg, String menu, String[] options) {
+    // returns eventID
+    public int bookEvent(Date date, String pkg, String menu, String[] options) {
         eventID = storage.createEvent(date, pkg, menu, options);
+        return eventID;
     }
 
     public int getEventID() {

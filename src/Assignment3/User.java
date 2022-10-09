@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class User {
     private EventStorage manager;
-    private String eventID;
+    protected String eventID;
 
     User(EventStorage eventStorage) {
         manager = eventStorage;
@@ -17,5 +17,9 @@ public class User {
 
     public void giveFeedback(String type, String content){
         Feedback feedback = new Feedback(type, content);
+    }
+
+    public String getEventID() {
+        return eventID;
     }
 }

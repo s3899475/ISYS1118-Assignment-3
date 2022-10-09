@@ -1,37 +1,131 @@
 package Assignment3;
 
 import java.lang.System;
+import java.util.ArrayList;
 import java.util.Date;
 import java.io.*;
 
 
 public class Assignment3 {
+    // there will only be 1 Assignment3 Instance, so these can all be static
+    private static EventStorage manager;
+    private static ArrayList<User> users;
+    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     public static void main(String[] args) {
         // initialize and make interface with system
         System.out.println("Starting Assignment 3");
 
         int choice = menu(new String[] {
-            "Event System",
-            "Feedback system",
-            "Three"
+            "Book Event",
+            "Login as Normal User",
+            "Login as Authorized User"
         });
 
-        EventStorage manager = new EventStorage();
+        manager = new EventStorage();
+        users = new ArrayList<User>();
+
+        // TESTING: create some dummy users
+        User test_user = new User(manager);
+        users.add(test_user);
+        test_user.bookEvent(new Date());
+
+        User test_user2 = new User(manager);
+        users.add(test_user2);
+        test_user2.bookEvent(new Date());
 
         switch (choice) {
             case 1:
-                User usr = new User(manager);
-                usr.bookEvent(new Date());
+                // TODO: add event options here
+                User new_user = new User(manager);
+
+                users.add(new_user);
+                new_user.bookEvent(new Date());
                 manager.printAllEvents();
                 break;
+
+            case 2: // Authorized User
+                manager.printAllEvents();
+                String id = question("Input Event ID");
+                User usr = getUser(id);
+                if (usr == null) {
+                    System.out.println("That user does not exist\n");
+                } else {
+                    userMenu(usr);
+                }
+                break;
+
+            case 3: // Normal User
+                String username = question("Input username");
+                String password = question("Input username");
+                User auth_user = getAuthUser(username, password);
+                if (auth_user == null) {
+                    System.out.println("Username or password incorrect\n");
+                } else {
+                    //authUserMenu(auth_user);
+                }
+                break;
+
         
             default:
                 break;
         }
     }
 
+    private static AuthorizedUser getAuthUser(String username, String password) {
+        for (User user : users) {
+            if (user instanceof AuthorizedUser) {
+                // cast to subclass
+                AuthorizedUser authUser = (AuthorizedUser) user;
+                if (authUser.getUsername() == username && authUser.getPassword() == password) {
+                    return authUser;
+                }
+            }
+        }
+        return null;
+    }
+
+    private static User getUser(String eventID) {
+        for (User user : users) {
+            System.out.println(eventID);
+            System.out.println(user.getEventID());
+            if (user.getEventID() != "0" && user.getEventID() == eventID) {
+                return user;
+            }
+        }
+        return null;
+    }
+
+    private static String question(String str) {
+        System.out.println(str);
+        try {
+            return br.readLine();
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
+    private static void userMenu(User user) {
+        while (true) {
+            int choice = menu( new String[] {
+                "Send FeedBack",
+                "Ask for modification to Event",
+                "View event details"
+            });
+
+            switch (choice) {
+                case 1:
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+
     private static int menu(String[] options) {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
 
         // loop until a valid choice is made
         while (true) {

@@ -140,6 +140,7 @@ public class Assignment3 {
         while (true) {
             // print menu
             for (int i = 0; i < options.length; i++) {
+                System.out.println("What would you like to do? Enter a number.");
                 System.out.printf("%d: %s\n", i+1, options[i]);
             }
             

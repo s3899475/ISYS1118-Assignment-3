@@ -8,5 +8,10 @@ public class Feedback {
         this.type = type;
         this.content = content;
     }
+
+    public void getFeedback(){
+        System.out.println(this.type);
+        System.out.println(this.content);
+    }
     
 }

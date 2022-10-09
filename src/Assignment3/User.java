@@ -15,10 +15,6 @@ public class User {
         eventID = manager.createEvent(date);
     }
 
-    public void giveFeedback(String type, String content){
-        Feedback feedback = new Feedback(type, content);
-    }
-
     public String getEventID() {
         return eventID;
     }

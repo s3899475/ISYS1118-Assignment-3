@@ -10,16 +10,16 @@ public class EventStorage {
         events = new ArrayList<>();
     }
     
-    public String createEvent(Date date) {
+    public int createEvent(Date date) {
         // make an event with a new eventID
         
-        String id = Integer.toString(events.size() + 1);
+        int id = events.size() + 1;
         events.add(new Event(id, date));
 
         return id;
     }
 
-    public Event getEvent(String eventID) {
+    public Event getEvent(int eventID) {
         for (Event event : events) {
             if (event.getEventID() == eventID) {
                 return event;
